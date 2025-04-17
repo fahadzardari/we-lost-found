@@ -2,12 +2,10 @@
 require_once '../../includes/config.php';
 require_once '../../includes/functions.php';
 
-// Check if user is logged in
 if (!isLoggedIn()) {
     redirect('auth/login.php');
 }
 
-// Get user's items
 try {
     $stmt = $conn->prepare("
         SELECT i.*, 
@@ -22,7 +20,6 @@ try {
     $stmt->execute([$_SESSION['user_id']]);
     $user_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Get categories for filter
     $stmt = $conn->query("SELECT DISTINCT category FROM items ORDER BY category");
     $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
@@ -31,7 +28,6 @@ try {
     $categories = [];
 }
 
-// Include header
 include_once '../../includes/header.php';
 ?>
 
@@ -83,7 +79,6 @@ include_once '../../includes/header.php';
     </div>
 </div>
 
-<!-- My Items Section -->
 <div class="bg-white shadow-md rounded-lg p-6">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">My Lost & Found Items</h2>
@@ -165,7 +160,6 @@ include_once '../../includes/header.php';
 </div>
 
 <script>
-    // Simple filtering functionality
     document.getElementById('type-filter').addEventListener('change', filterItems);
     document.getElementById('category-filter').addEventListener('change', filterItems);
 

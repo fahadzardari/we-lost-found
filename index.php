@@ -2,7 +2,6 @@
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 
-// Get recent lost & found items
 try {
     $stmt = $conn->query("
         SELECT i.*, u.name as user_name, 
@@ -22,7 +21,6 @@ try {
     $recent_items = [];
 }
 
-// Include header
 include_once 'includes/header.php';
 ?>
 

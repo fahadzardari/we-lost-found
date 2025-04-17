@@ -8,7 +8,6 @@ $error = '';
 $item = null;
 $images = [];
 
-// Process claim submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_claim'])) {
     if (!isLoggedIn()) {
         $error = 'You must be logged in to submit a claim';
@@ -20,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_claim'])) {
             $error = 'Please provide details to support your claim';
         } else {
             try {
-                // Insert claim into database
                 $stmt = $conn->prepare("
                     INSERT INTO claims (item_id, user_id, claim_details, contact_info, status, created_at)
                     VALUES (?, ?, ?, ?, 'pending', NOW())
@@ -41,10 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_claim'])) {
     }
 }
 
-// Get item details
 if ($itemId > 0) {
     try {
-        // Get item details with user info
         $stmt = $conn->prepare("
             SELECT i.*, u.name as user_name, u.email as user_email
             FROM items i
@@ -55,12 +51,10 @@ if ($itemId > 0) {
         $item = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($item) {
-            // Get item images
             $stmt = $conn->prepare("SELECT image_path FROM item_images WHERE item_id = ?");
             $stmt->execute([$itemId]);
             $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
             
-            // Check if user has already claimed this item
             $userHasClaimed = false;
             if (isLoggedIn()) {
                 $stmt = $conn->prepare("
@@ -71,7 +65,6 @@ if ($itemId > 0) {
                 $userHasClaimed = ($stmt->fetchColumn() > 0);
             }
             
-            // Get similar items (fuzzy matching)
             $oppositeType = $item['type'] == 'lost' ? 'found' : 'lost';
             $stmt = $conn->prepare("
                 SELECT i.*, 
@@ -116,7 +109,6 @@ if ($itemId > 0) {
     }
 }
 
-// Include header
 include_once 'includes/header.php';
 ?>
 

@@ -2,12 +2,10 @@
 require_once '../../includes/config.php';
 require_once '../../includes/functions.php';
 
-// Check if user is logged in and is admin
 if (!isLoggedIn() || !isAdmin()) {
   redirect('auth/login.php');
 }
 
-// Get statistics
 try {
   // Count total users
   $stmt = $conn->query("SELECT COUNT(*) FROM users");
@@ -60,18 +58,14 @@ try {
   // Handle any database errors
 }
 
-// Include header
 include_once '../../includes/header.php';
 
-// Include admin sidebar
 include_once '../../includes/sidebar.php';
 ?>
 
-<!-- Admin Dashboard Content -->
 <h1 class="text-2xl font-bold">Admin Dashboard</h1>
 <p class="text-gray-600 mb-6">Welcome to the administrative panel.</p>
 
-<!-- Statistics Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <div class="p-4 bg-blue-600 text-white">
@@ -119,7 +113,6 @@ include_once '../../includes/sidebar.php';
   </div>
 </div>
 
-<!-- Items Status Chart -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
   <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <div class="p-4 border-b">
@@ -144,7 +137,6 @@ include_once '../../includes/sidebar.php';
   </div>
 </div>
 
-<!-- Recent Items Table -->
 <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
   <div class="p-4 border-b">
     <h3 class="font-bold text-lg">Recent Items</h3>
@@ -240,12 +232,9 @@ include_once '../../includes/sidebar.php';
 </div>
 </main>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 <script>
-  // Prepare chart data
   document.addEventListener('DOMContentLoaded', function () {
-    // Items Status Chart
     const itemsCtx = document.getElementById('itemsChart').getContext('2d');
     const itemsChart = new Chart(itemsCtx, {
       type: 'doughnut',

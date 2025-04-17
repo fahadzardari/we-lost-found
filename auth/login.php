@@ -4,12 +4,10 @@ require_once '../includes/functions.php';
 
 $error = '';
 
-// Check if user is already logged in
 if (isLoggedIn()) {
     redirect('dashboard/user');
 }
 
-// Process login form
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = sanitizeInput($_POST['email']);
     $password = $_POST['password'];
@@ -18,22 +16,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = 'Please enter both email and password';
     } else {
         try {
-            // Check if user exists
             $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND status = 'active'");
             $stmt->execute([$email]);
             
             if ($stmt->rowCount() == 1) {
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                // Verify password
                 if (password_verify($password, $user['password'])) {
-                    // Set session variables
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_name'] = $user['name'];
                     $_SESSION['user_email'] = $user['email'];
                     $_SESSION['user_role'] = $user['role'];
                     
-                    // Redirect based on role
                     if ($user['role'] == 'admin') {
                         redirect('dashboard/admin');
                     } else {
@@ -51,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Include header
 include_once '../includes/header.php';
 ?>
 

@@ -7,7 +7,6 @@ $type = isset($_GET['type']) ? sanitizeInput($_GET['type']) : '';
 $category = isset($_GET['category']) ? sanitizeInput($_GET['category']) : '';
 $results = [];
 
-// Get all categories for the filter dropdown
 try {
     $stmt = $conn->query("SELECT DISTINCT category FROM items ORDER BY category");
     $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -15,10 +14,8 @@ try {
     $categories = [];
 }
 
-// Process search when a query is provided
 if (!empty($query)) {
     try {
-        // Build the query with match score calculation
         $sql = "
             SELECT i.*, u.name as user_name, 
                    (SELECT image_path FROM item_images WHERE item_id = i.id LIMIT 1) as image,
@@ -65,33 +62,28 @@ if (!empty($query)) {
             '%' . $query . '%'          // Location match
         ];
 
-        // Add type filter if specified
         if (!empty($type)) {
             $sql .= " AND i.type = ?";
             $params[] = $type;
         }
 
-        // Add category filter if specified
         if (!empty($category)) {
             $sql .= " AND i.category = ?";
             $params[] = $category;
         }
 
-        // Add having clause to filter by minimum match percentage and sort by match percentage
         $sql .= " HAVING match_percentage > 0 ORDER BY match_percentage DESC";
 
         $stmt = $conn->prepare($sql);
         $stmt->execute($params);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Normalize match percentage to 0-100 range
         $maxScore = 100; // Maximum possible score based on weights above
         foreach ($results as &$result) {
             $result['match_percentage'] = min(100, round(($result['match_percentage'] / $maxScore) * 100));
         }
 
     } catch (PDOException $e) {
-        // Handle database error
         $error = "Database error: " . $e->getMessage();
     }
 }
