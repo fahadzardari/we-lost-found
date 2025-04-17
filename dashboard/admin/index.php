@@ -68,178 +68,177 @@ include_once '../../includes/sidebar.php';
 ?>
 
 <!-- Admin Dashboard Content -->
-<div class="md:ml-64 pt-6 px-4 pb-4">
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold">Admin Dashboard</h1>
-    <p class="text-gray-600">Welcome to the administrative panel.</p>
-  </div>
+<h1 class="text-2xl font-bold">Admin Dashboard</h1>
+<p class="text-gray-600 mb-6">Welcome to the administrative panel.</p>
 
-  <!-- Statistics Cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 bg-blue-600 text-white">
-        <h3 class="font-bold text-lg">Total Users</h3>
-      </div>
-      <div class="p-4">
-        <p class="text-3xl font-bold"><?php echo $total_users; ?></p>
-        <p class="text-sm text-gray-600">
-          <span class="text-green-600"><?php echo $active_users; ?> active</span> -
-          <span class="text-red-600"><?php echo $banned_users; ?> banned</span>
-        </p>
-      </div>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 bg-blue-600 text-white">
+      <h3 class="font-bold text-lg">Total Users</h3>
     </div>
-
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 bg-red-600 text-white">
-        <h3 class="font-bold text-lg">Lost Items</h3>
-      </div>
-      <div class="p-4">
-        <p class="text-3xl font-bold"><?php echo $lost_items; ?></p>
-        <p class="text-sm text-gray-600"><?php echo round(($lost_items / max(1, $total_items) * 100)); ?>% of all items
-        </p>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 bg-green-600 text-white">
-        <h3 class="font-bold text-lg">Found Items</h3>
-      </div>
-      <div class="p-4">
-        <p class="text-3xl font-bold"><?php echo $found_items; ?></p>
-        <p class="text-sm text-gray-600"><?php echo round(($found_items / max(1, $total_items) * 100)); ?>% of all items
-        </p>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 bg-yellow-600 text-white">
-        <h3 class="font-bold text-lg">Matches</h3>
-      </div>
-      <div class="p-4">
-        <p class="text-3xl font-bold"><?php echo $total_matches; ?></p>
-        <p class="text-sm text-gray-600"><?php echo $confirmed_matches; ?> confirmed matches</p>
-      </div>
+    <div class="p-4">
+      <p class="text-3xl font-bold"><?php echo $total_users; ?></p>
+      <p class="text-sm text-gray-600">
+        <span class="text-green-600"><?php echo $active_users; ?> active</span> -
+        <span class="text-red-600"><?php echo $banned_users; ?> banned</span>
+      </p>
     </div>
   </div>
 
-  <!-- Items Status Chart -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 border-b">
-        <h3 class="font-bold text-lg">Items Status</h3>
-      </div>
-      <div class="p-4">
-        <div class="h-64">
-          <canvas id="itemsChart"></canvas>
-        </div>
-      </div>
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 bg-red-600 text-white">
+      <h3 class="font-bold text-lg">Lost Items</h3>
     </div>
-
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="p-4 border-b">
-        <h3 class="font-bold text-lg">Resolution Rate</h3>
-      </div>
-      <div class="p-4">
-        <div class="h-64">
-          <canvas id="resolutionChart"></canvas>
-        </div>
-      </div>
+    <div class="p-4">
+      <p class="text-3xl font-bold"><?php echo $lost_items; ?></p>
+      <p class="text-sm text-gray-600"><?php echo round(($lost_items / max(1, $total_items) * 100)); ?>% of all items
+      </p>
     </div>
   </div>
 
-  <!-- Recent Items Table -->
-  <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-    <div class="p-4 border-b">
-      <h3 class="font-bold text-lg">Recent Items</h3>
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 bg-green-600 text-white">
+      <h3 class="font-bold text-lg">Found Items</h3>
     </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <?php foreach ($recent_items as $item): ?>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="h-10 w-10 flex-shrink-0 mr-3">
-                    <?php if ($item['image']): ?>
-                      <img class="h-10 w-10 rounded object-cover" src="<?php echo UPLOAD_URL . $item['image']; ?>"
-                        alt="<?php echo $item['title']; ?>">
-                    <?php else: ?>
-                      <div class="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-gray-500">
-                        <i class="fas fa-image"></i>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                  <div>
-                    <div class="text-sm font-medium text-gray-900"><?php echo $item['title']; ?></div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    <?php echo $item['type'] == 'lost' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
-                  <?php echo ucfirst($item['type']); ?>
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <?php echo $item['category']; ?>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <?php echo $item['user_name']; ?>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <?php echo date('M d, Y', strtotime($item['created_at'])); ?>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <?php if ($item['status'] == 'active'): ?>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    Active
-                  </span>
-                <?php elseif ($item['status'] == 'resolved'): ?>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                    Resolved
-                  </span>
-                <?php elseif ($item['status'] == 'spam'): ?>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                    Spam
-                  </span>
-                <?php else: ?>
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                    <?php echo ucfirst($item['status']); ?>
-                  </span>
-                <?php endif; ?>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <a href="view-item.php?id=<?php echo $item['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-3">
-                  View
-                </a>
-                <a href="manage-reports.php?action=mark_spam&id=<?php echo $item['id']; ?>"
-                  class="text-red-600 hover:text-red-900"
-                  onclick="return confirm('Are you sure you want to mark this item as spam?')">
-                  Mark as Spam
-                </a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
+    <div class="p-4">
+      <p class="text-3xl font-bold"><?php echo $found_items; ?></p>
+      <p class="text-sm text-gray-600"><?php echo round(($found_items / max(1, $total_items) * 100)); ?>% of all items
+      </p>
     </div>
-    <div class="p-4 border-t text-right">
-      <a href="manage-reports.php" class="text-blue-600 hover:underline">View all reports →</a>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 bg-yellow-600 text-white">
+      <h3 class="font-bold text-lg">Matches</h3>
+    </div>
+    <div class="p-4">
+      <p class="text-3xl font-bold"><?php echo $total_matches; ?></p>
+      <p class="text-sm text-gray-600"><?php echo $confirmed_matches; ?> confirmed matches</p>
     </div>
   </div>
 </div>
+
+<!-- Items Status Chart -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 border-b">
+      <h3 class="font-bold text-lg">Items Status</h3>
+    </div>
+    <div class="p-4">
+      <div class="h-64">
+        <canvas id="itemsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-4 border-b">
+      <h3 class="font-bold text-lg">Resolution Rate</h3>
+    </div>
+    <div class="p-4">
+      <div class="h-64">
+        <canvas id="resolutionChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Items Table -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+  <div class="p-4 border-b">
+    <h3 class="font-bold text-lg">Recent Items</h3>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <?php foreach ($recent_items as $item): ?>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-10 w-10 flex-shrink-0 mr-3">
+                  <?php if ($item['image']): ?>
+                    <img class="h-10 w-10 rounded object-cover" src="<?php echo UPLOAD_URL . $item['image']; ?>"
+                      alt="<?php echo $item['title']; ?>">
+                  <?php else: ?>
+                    <div class="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-gray-500">
+                      <i class="fas fa-image"></i>
+                    </div>
+                  <?php endif; ?>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-900"><?php echo $item['title']; ?></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                  <?php echo $item['type'] == 'lost' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
+                <?php echo ucfirst($item['type']); ?>
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <?php echo $item['category']; ?>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <?php echo $item['user_name']; ?>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <?php echo date('M d, Y', strtotime($item['created_at'])); ?>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <?php if ($item['status'] == 'active'): ?>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
+              <?php elseif ($item['status'] == 'resolved'): ?>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  Resolved
+                </span>
+              <?php elseif ($item['status'] == 'spam'): ?>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                  Spam
+                </span>
+              <?php else: ?>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                  <?php echo ucfirst($item['status']); ?>
+                </span>
+              <?php endif; ?>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <a href="view-item.php?id=<?php echo $item['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-3">
+                View
+              </a>
+              <a href="manage-reports.php?action=mark_spam&id=<?php echo $item['id']; ?>"
+                class="text-red-600 hover:text-red-900"
+                onclick="return confirm('Are you sure you want to mark this item as spam?')">
+                Mark as Spam
+              </a>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+  <div class="p-4 border-t text-right">
+    <a href="manage-reports.php" class="text-blue-600 hover:underline">View all reports →</a>
+  </div>
+</div>
+
+</div>
+</main>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>

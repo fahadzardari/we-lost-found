@@ -289,12 +289,7 @@ include_once 'includes/header.php';
                             </div>
                         </div>
                         
-                        <!-- Report Button -->
-                        <div class="mb-6">
-                            <a href="#" class="block text-center text-red-600 hover:text-red-700">
-                                <i class="fas fa-flag mr-1"></i> Report this item
-                            </a>
-                        </div>
+                     
                         
                         <!-- Similar Items -->
                         <?php if (!empty($similarItems)): ?>
